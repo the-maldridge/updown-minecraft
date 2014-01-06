@@ -12,9 +12,13 @@ class reportGenerator():
         logging.debug("Beginning query cycle")
         for server in hosts:
             logging.info("Querying %s", str(server))
-            query = MinecraftQuery(hosts[server]["ip"], hosts[server]["port"])
-            hosts[server]["status"]=query.get_status()
-            logging.debug(json.dumps(hosts[server]["status"]))
+            try:
+                query = MinecraftQuery(hosts[server]["ip"], hosts[server]["port"])
+                hosts[server]["status"]=query.get_status()
+                logging.debug(json.dumps(hosts[server]["status"]))
+            except:
+                hosts[server]["status"]="OFFLINE"
+                logging.warning("{0} appears to be offline!".format(str(server)))
         return hosts
 
     def update(self):
@@ -41,10 +45,13 @@ class webFormater():
         for server in self.reportdata:
             self.page.write("<tr class=\"serverinfo\">")
             self.page.write("<td>{0}</td>".format(str(server)))
-            self.page.write("<td>{0}".format(str(self.reportdata[server]["status"]["motd"])))
-            self.page.write(" @ {0}".format(self.reportdata[server]["port"]))
-            self.page.write("<td>{0}/{1}</td>".format(str(self.reportdata[server]["status"]["numplayers"]), str(self.reportdata[server]["status"]["maxplayers"])))
-            self.page.write("</tr>")
+            if self.reportdata[server]["status"] != "OFFLINE": 
+                self.page.write("<td>{0}".format(str(self.reportdata[server]["status"]["motd"])))
+                self.page.write(" @ {0}".format(self.reportdata[server]["port"]))
+                self.page.write("<td>{0}/{1}</td>".format(str(self.reportdata[server]["status"]["numplayers"]), str(self.reportdata[server]["status"]["maxplayers"])))
+                self.page.write("</tr>")
+            else:
+                self.page.write("<td colspan=2>SERVER IS OFFLINE</td>")
         self.page.write("</table>")
 
     def writeFooter(self):
