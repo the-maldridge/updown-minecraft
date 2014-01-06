@@ -11,11 +11,11 @@ def init():
 
 def query(hosts):
     logging.debug("Beginning query cycle")
-    for host in hosts:
-        logging.info("Querying %s", str(host))
-        query = MinecraftQuery(hosts[host]["ip"], hosts[host]["port"])
-        hosts[host]["status"]=query.get_status()
-        logging.debug(json.dumps(hosts[host]["status"]))
+    for server in hosts:
+        logging.info("Querying %s", str(server))
+        query = MinecraftQuery(hosts[server]["ip"], hosts[server]["port"])
+        hosts[server]["status"]=query.get_status()
+        logging.debug(json.dumps(hosts[server]["status"]))
     return hosts
 
 def main(servers):
