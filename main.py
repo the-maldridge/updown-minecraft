@@ -4,7 +4,6 @@ from minecraft_query import MinecraftQuery
 
 class reportGenerator():
     def __init__(self, sfilename):
-        logging.basicConfig(level = logging.INFO)
         sfile = open(sfilename)
         self.serverlist = json.load(sfile)
         sfile.close()
@@ -26,6 +25,40 @@ class reportGenerator():
         json.dump(report, out, indent=2)
         out.close()
 
+class webFormater():
+    def __init__(self, reportfile):
+        rfile = open(reportfile)
+        self.reportdata = json.load(rfile)
+        rfile.close()
+        self.page = open("index.html", 'w')
+
+    def writeHeader(self):
+        self.page.write("<html><head><title>Minecraft Server Status</title></head>")
+
+    def writeBody(self):
+        self.page.write("<table cellpadding=4px>")
+        self.page.write("<th>Server Report</th>")
+        for server in self.reportdata:
+            self.page.write("<tr class=\"serverinfo\">")
+            self.page.write("<td>{0}</td>".format(str(server)))
+            self.page.write("<td>{0}".format(str(self.reportdata[server]["status"]["motd"])))
+            self.page.write(" @ {0}".format(self.reportdata[server]["port"]))
+            self.page.write("<td>{0}/{1}</td>".format(str(self.reportdata[server]["status"]["numplayers"]), str(self.reportdata[server]["status"]["maxplayers"])))
+            self.page.write("</tr>")
+        self.page.write("</table>")
+
+    def writeFooter(self):
+        self.page.write("</body>")
+        self.page.write("</html>")
+
+    def update(self):
+        self.writeHeader()
+        self.writeBody()
+        self.writeFooter()
+
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     reporter = reportGenerator("servers.json")
     reporter.update()
+    writer = webFormater("report.json")
+    writer.update()
