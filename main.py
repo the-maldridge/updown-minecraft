@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import json
 import logging
 import time
@@ -41,8 +40,7 @@ class webFormater():
 
     def writeHeader(self):
         self.page.write("<html><head><title>Minecraft Server Status</title>")
-        self.page.write("<meta http-equiv=\"refresh\" content=\"60\"">
-</head>")
+        self.page.write("<meta http-equiv=\"refresh\" content=\"60\"></head>")
 
     def writeBody(self):
         self.page.write("<table cellpadding=4px>")
