@@ -40,7 +40,9 @@ class webFormater():
         self.page = open("index.html", 'w')
 
     def writeHeader(self):
-        self.page.write("<html><head><title>Minecraft Server Status</title></head>")
+        self.page.write("<html><head><title>Minecraft Server Status</title>")
+        self.page.write("<meta http-equiv=\"refresh\" content=\"60\"">
+</head>")
 
     def writeBody(self):
         self.page.write("<table cellpadding=4px>")
