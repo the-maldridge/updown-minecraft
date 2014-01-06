@@ -13,7 +13,7 @@ class reportGenerator():
         for server in hosts:
             logging.info("Querying %s", str(server))
             try:
-                query = MinecraftQuery(hosts[server]["ip"], hosts[server]["port"])
+                query = MinecraftQuery(hosts[server]["ip"], hosts[server]["port"], timeout=1)
                 hosts[server]["status"]=query.get_status()
                 logging.debug(json.dumps(hosts[server]["status"]))
             except:
