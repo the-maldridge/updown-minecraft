@@ -3,7 +3,7 @@ import logging
 from minecraft_query import MinecraftQuery
 
 def init():
-    logging.basicConfig(defaultLevel = logging.INFO)
+    logging.basicConfig(level = logging.INFO)
     sfile = open("servers.json")
     serverlist = json.load(sfile)
     sfile.close()
@@ -15,13 +15,14 @@ def query(hosts):
         logging.info("Querying %s", str(host))
         query = MinecraftQuery(hosts[host]["ip"], hosts[host]["port"])
         hosts[host]["status"]=query.get_status()
+        logging.debug(json.dumps(hosts[host]["status"]))
     return hosts
 
 def main(servers):
-    logging.debug("Beginning query")
+    logging.debug("Starting update cycle")
     report = query(servers)
-    print report
     out = open("report.json", 'w')
+    logging.info("Writting report")
     json.dump(report, out, indent=2)
     out.close()
 
