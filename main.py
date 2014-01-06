@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from minecraft_query import MinecraftQuery
 
 class reportGenerator():
@@ -41,7 +42,7 @@ class webFormater():
 
     def writeBody(self):
         self.page.write("<table cellpadding=4px>")
-        self.page.write("<th>Server Report</th>")
+        self.page.write("<th colspan=3>Server Report as of {0}</th>".format(str(time.asctime())))
         for server in self.reportdata:
             self.page.write("<tr class=\"serverinfo\">")
             self.page.write("<td>{0}</td>".format(str(server)))
